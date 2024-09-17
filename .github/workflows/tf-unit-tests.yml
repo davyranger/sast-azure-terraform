@@ -52,3 +52,11 @@ jobs:
       with:
         sarif_file: results.sarif
         category: checkov
+
+    # Upload SARIF file as an artifact
+    - name: Upload SARIF file as artifact
+      if: success() || failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: sarif-results
+        path: results.sarif
