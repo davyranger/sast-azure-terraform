@@ -46,9 +46,17 @@ jobs:
       run: ls -la
 
     # Upload results to GitHub Advanced Security
-    - name: Upload SARIF file
+    # - name: Upload SARIF file
+    #   if: success() || failure()
+    #   uses: github/codeql-action/upload-sarif@v3
+    #   with:
+    #     sarif_file: results.sarif
+    #     category: checkov
+
+    # Upload SARIF file as an artifact
+    - name: Upload SARIF file as artifact
       if: success() || failure()
-      uses: github/codeql-action/upload-sarif@v3
+      uses: actions/upload-artifact@v4
       with:
-        sarif_file: results.sarif
-        category: checkov
+        name: sarif-results
+        path: results.sarif
