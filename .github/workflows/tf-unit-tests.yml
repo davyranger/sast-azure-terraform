@@ -56,7 +56,7 @@ jobs:
     # Upload SARIF file as an artifact
     - name: Upload SARIF file as artifact
       if: success() || failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: sarif-results
         path: results.sarif
