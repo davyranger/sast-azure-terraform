@@ -1,0 +1,32 @@
+# Variables for resource group, storage account, and container
+$RESOURCE_GROUP_NAME='rg-terraform-github-actions-state'  # Name of the Azure resource group
+$STORAGE_ACCOUNT_NAME = "tfgithubactions$(Get-Random -Minimum 100000 -Maximum 1000000)"  # Globally unique storage account name with a random suffix to ensure uniqueness (between 3 and 24 characters in length)
+$CONTAINER_NAME='tfstate'  # Name of the blob container where the Terraform state will be stored
+
+# Step 1: Create a resource group in Azure
+az group create --name $RESOURCE_GROUP_NAME --location australiacentral  
+# Creates a resource group in the specified region (Australia Central in this case)
+
+# Step 2: Create a storage account in the resource group
+az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob  
+# Creates a storage account with locally redundant storage (Standard_LRS) and enables encryption for blob services
+
+# Step 3: Create a blob container within the storage account
+az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME  
+# Creates a blob container in the specified storage account, which will hold the Terraform state file
+
+# Step 4: Retrieve the storage account key and set it as an environment variable
+$ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)  
+# Retrieves the first storage account key for the storage account and stores it in the variable $ACCOUNT_KEY
+
+$env:ARM_ACCESS_KEY=$ACCOUNT_KEY  
+# Sets the storage account key as an environment variable (ARM_ACCESS_KEY) so that it can be used by Terraform
+# each member of the team would need this key to access the storage account
+
+
+backend "azurerm" {
+    resource_group_name  = "tfstateRG01"
+    storage_account_name = "<storage_account_name>"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+}
