@@ -5,6 +5,7 @@ on:
   schedule:
     - cron: '45 3 * * *' # runs nightly at 3:41 am
 
+
 #Special permissions required for OIDC authentication
 permissions:
   id-token: write
