@@ -4,8 +4,19 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
+# Specifies the version of the Dependabot configuration format being used.
+
 updates:
-  - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # Defines the list of dependencies or package ecosystems to monitor for updates.
+
+  - package-ecosystem: "terraform"
+    # Specifies that the package ecosystem is Terraform, so Dependabot will check for updates to Terraform modules and providers.
+
+    directory: "/"
+    # Indicates the directory to check for dependency files (like .tf files or lockfiles).
+    # "/" means it will check in the root directory of the repository.
+
     schedule:
       interval: "weekly"
+      # Sets the frequency of the update checks. Here, Dependabot will check for updates once a week.
+
