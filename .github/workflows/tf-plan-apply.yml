@@ -113,6 +113,7 @@ jobs:
                 body: body
             })
                 
+  # The exit code 2 typically indicates that there are changes to be applied             
   terraform-apply:
     name: 'Terraform Apply'
     if: github.ref == 'refs/heads/main' && needs.terraform-plan.outputs.tfplanExitCode == 2
